@@ -1,7 +1,7 @@
 package com.clinica.controller;
 
 import com.clinica.domain.healthcareservice.HealthcareService;
-import com.clinica.repository.IHealthcareServiceRepository;
+import com.clinica.service.HealthcareServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +16,12 @@ import java.util.List;
 public class HealthcareServiceController {
 
     @Autowired
-    private IHealthcareServiceRepository healthcareServiceRepos;
+    private HealthcareServiceService healthcareServiceService;
 
     @GetMapping
-    public ResponseEntity list() {
+    public ResponseEntity<List<HealthcareService>> list() {
 
-        List<HealthcareService> services = healthcareServiceRepos.findAll();
+        List<HealthcareService> services = healthcareServiceService.list();
 
         return ResponseEntity.status(HttpStatus.OK).body(services);
 
