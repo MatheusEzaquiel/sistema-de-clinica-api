@@ -15,17 +15,16 @@ public class HealthcareService {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     private String name;
     private String description;
     private Float price;
-    private LocalDateTime enabled;
+    private boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public HealthcareService() {}
 
-    public HealthcareService(UUID id, String name, String description, Float price, LocalDateTime enabled, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public HealthcareService(UUID id, String name, String description, Float price, Boolean enabled, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -67,11 +66,11 @@ public class HealthcareService {
         this.price = price;
     }
 
-    public LocalDateTime getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(LocalDateTime enabled) {
+    public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
 
