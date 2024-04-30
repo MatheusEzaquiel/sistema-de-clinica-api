@@ -1,6 +1,6 @@
 CREATE TABLE pacientes(
 	id UUID PRIMARY KEY,
-	id_clinica UUID references clinica(id) NOT NULL,
+	id_clinica UUID REFERENCES clinicas(id) NOT NULL,
 	cpf VARCHAR(11) NOT NULL UNIQUE,
 	nome VARCHAR(250) NOT NULL,
 	data_nascimento VARCHAR(250) NOT NULL,

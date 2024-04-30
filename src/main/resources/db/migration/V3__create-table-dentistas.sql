@@ -1,6 +1,6 @@
 CREATE TABLE dentistas(
-	id UUID PRIMARY key,
-	id_clinica UUID references clinica(id) NOT NULL,
+	id UUID PRIMARY KEY,
+	id_clinica UUID references clinicas(id) NOT NULL,
 	cpf VARCHAR(11) NOT NULL UNIQUE,
 	cro VARCHAR(11) NOT NULL UNIQUE,
 	nome VARCHAR(250) NOT NULL,
