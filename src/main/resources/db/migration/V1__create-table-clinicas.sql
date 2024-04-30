@@ -1,0 +1,10 @@
+CREATE TABLE clinicas(
+	id UUID PRIMARY key,
+	cnpj VARCHAR(250) NOT NULL UNIQUE,
+	nome VARCHAR(250) NOT NULL,
+	endereco VARCHAR(250) NOT NULL,
+	ano_fundacao INTEGER NOT NULL,
+	ativo BOOLEAN NOT NULL,
+	criado_em TIMESTAMP NOT NULL,	
+	atualizado_em TIMESTAMP	
+);
