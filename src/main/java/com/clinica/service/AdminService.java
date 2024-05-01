@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -74,13 +76,7 @@ public class AdminService {
             Clinica clinica = clinicaOpt.get();
             IdNomeClinicaDTO clinicaDTO = new IdNomeClinicaDTO(clinica.getId(), clinica.getNome());
 
-            Admin adminToSave = new Admin(){};
-            adminToSave.setId(UUID.randomUUID());
-            adminToSave.setCpf(data.cpf());
-            adminToSave.setNome(data.nome());
-            adminToSave.setRole(data.role());
-            adminToSave.setDataNascimento(data.dataNascimento());
-            adminToSave.setClinica(clinica);
+            Admin adminToSave = new Admin(UUID.randomUUID(), data.cpf(), data.role(), data.nome(), data.dataNascimento(), true, LocalDateTime.now(), null, clinica);
 
             return new DetailAdminDTO(adminRepos.save(adminToSave),clinicaDTO);
 

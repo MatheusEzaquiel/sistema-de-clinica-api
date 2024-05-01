@@ -1,16 +1,13 @@
-package com.clinica.domain.admin.dto;
+package com.clinica.domain.paciente.dto;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
-public record CreateAdminDTO(
-
+public record CreatePacienteDTO(
         String cpf,
-        Integer role,
         String nome,
         LocalDate dataNascimento,
-        UUID idClinica
-
+        Boolean planoDeSaude,
+        UUID clinicaId
 ) {
-
 }

@@ -2,6 +2,7 @@ package com.clinica.service;
 
 import com.clinica.domain.clinica.Clinica;
 import com.clinica.domain.paciente.Paciente;
+import com.clinica.domain.paciente.dto.CreatePacienteDTO;
 import com.clinica.domain.paciente.dto.DetailPacienteDTO;
 import com.clinica.domain.paciente.dto.ListPacienteDTO;
 import com.clinica.repository.IClinicaRepository;
@@ -10,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,28 +42,21 @@ public class PacienteService {
 
     }
 
-    public DetailPacienteDTO save(Paciente data) {
+    public DetailPacienteDTO save(CreatePacienteDTO data) {
 
-        if(data.getCpf() == null) throw new RuntimeException("the field cpf is blank");
-        if(data.getNome() == null) throw new RuntimeException("the field nome is blank");
-        if(data.getDataNascimento() == null) throw new RuntimeException("the field dataNascimento is blank");
-        if(data.getPlanoDeSaude() == null) throw new RuntimeException("the field planoDeSaude is blank");
+        if(data.cpf() == null) throw new RuntimeException("the field cpf is blank");
+        if(data.nome() == null) throw new RuntimeException("the field nome is blank");
+        if(data.clinicaId() == null) throw new RuntimeException("the field clinicaId is blank");
+        if(data.dataNascimento() == null) throw new RuntimeException("the field dataNascimento is blank");
+        if(data.planoDeSaude() == null) throw new RuntimeException("the field planoDeSaude is blank");
 
 
-        Optional<Clinica> clinicaOpt = clinicaRepos.findById(data.getClinica().getId());
+        Optional<Clinica> clinicaOpt = clinicaRepos.findById(data.clinicaId());
 
         if(clinicaOpt.isPresent()) {
 
             Clinica clinica = clinicaOpt.get();
-            //IdNomeClinicaDTO clinicaDTO = new IdNomeClinicaDTO(clinica.getId(), clinica.getNome());
-
-            Paciente patientToSave = new Paciente(){};
-            patientToSave.setId(UUID.randomUUID());
-            patientToSave.setCpf(data.getCpf());
-            patientToSave.setNome(data.getNome());
-            patientToSave.setDataNascimento(data.getDataNascimento());
-            patientToSave.setClinica(clinica);
-            patientToSave.setAtivo(true);
+            var patientToSave = new Paciente(UUID.randomUUID(), data.cpf(), data.nome(), data.dataNascimento(), data.planoDeSaude(), true, LocalDateTime.now(), null, clinica);
 
             return new DetailPacienteDTO(patientRepos.save(patientToSave));
 

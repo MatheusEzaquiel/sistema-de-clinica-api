@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record UpdateAdminDTO(
         String cpf,
-        String role,
+        Integer role,
         String nome,
         LocalDate dataNascimento,
         Boolean ativo,

@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -57,18 +58,10 @@ public class DentistaService {
         if(clinicaOpt.isPresent()) {
 
             Clinica clinica = clinicaOpt.get();
-            //IdNomeClinicaDTO clinicaDTO = new IdNomeClinicaDTO(clinica.getId(), clinica.getNome());
+            Dentista d = new Dentista(UUID.randomUUID(), data.cpf(), data.cro(), data.nome(), data.dataNascimento(), data.area(),
+                    true, LocalDateTime.now(), null, clinica);
 
-            Dentista dentistToSave = new Dentista(){};
-            dentistToSave.setCpf(data.cpf());
-            dentistToSave.setCro(data.cro());
-            dentistToSave.setNome(data.nome());
-            dentistToSave.setDataNascimento(data.dataNascimento());
-            dentistToSave.setArea(data.area());
-            dentistToSave.setClinica(clinica);
-            dentistToSave.setAtivo(true);
-
-            return new DetailDentistaDTO(dentistaRepos.save(dentistToSave));
+            return new DetailDentistaDTO(dentistaRepos.save(d));
 
         } else {
             throw new RuntimeException("The clinic of this dentist was not found");

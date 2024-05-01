@@ -15,7 +15,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String cpf;
-    private String role;
+    private Integer role;
     private String nome;
     private LocalDate dataNascimento;
     private Boolean ativo;
@@ -26,7 +26,7 @@ public class Admin {
     private Clinica clinica;
 
     public Admin(){}
-    public Admin(UUID id, String cpf, String role, String nome, LocalDate dataNascimento, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Clinica clinica) {
+    public Admin(UUID id, String cpf, Integer role, String nome, LocalDate dataNascimento, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Clinica clinica) {
         this.id = id;
         this.cpf = cpf;
         this.role = role;
@@ -54,11 +54,11 @@ public class Admin {
         this.cpf = cpf;
     }
 
-    public String getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 

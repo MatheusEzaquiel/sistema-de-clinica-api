@@ -40,6 +40,7 @@ public class Paciente {
         this.clinica = clinica;
     }
 
+
     public UUID getId() {
         return id;
     }

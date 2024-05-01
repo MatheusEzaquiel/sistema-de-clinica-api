@@ -1,6 +1,7 @@
 package com.clinica.controller;
 
 import com.clinica.domain.paciente.Paciente;
+import com.clinica.domain.paciente.dto.CreatePacienteDTO;
 import com.clinica.domain.paciente.dto.DetailPacienteDTO;
 import com.clinica.domain.paciente.dto.ListPacienteDTO;
 import com.clinica.service.PacienteService;
@@ -32,15 +33,15 @@ public class PacienteController {
     }
 
     @PostMapping
-    public ResponseEntity<DetailPacienteDTO> save(@RequestBody Paciente data) {
-        DetailPacienteDTO patientsDTO = pacienteService.save(data);
-        return ResponseEntity.status(HttpStatus.OK).body(patientsDTO);
+    public ResponseEntity<DetailPacienteDTO> save(@RequestBody CreatePacienteDTO data) {
+        DetailPacienteDTO patientDTO = pacienteService.save(data);
+        return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DetailPacienteDTO> update(@PathVariable UUID id, @RequestBody Paciente data) {
-        DetailPacienteDTO patientsDTO = pacienteService.update(id, data);
-        return ResponseEntity.status(HttpStatus.OK).body(patientsDTO);
+        DetailPacienteDTO patientDTO = pacienteService.update(id, data);
+        return ResponseEntity.status(HttpStatus.OK).body(patientDTO);
     }
 
     @DeleteMapping("/{id}")
