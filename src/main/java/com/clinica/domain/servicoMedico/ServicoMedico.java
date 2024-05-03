@@ -1,15 +1,13 @@
 package com.clinica.domain.servicoMedico;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.clinica.domain.dentista.Dentista;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
-@Entity(name="ServicoMedico")
+@Entity(name = "ServicoMedico")
 @Table(name = "servicos_medicos")
 public class ServicoMedico {
     @Id
@@ -22,6 +20,11 @@ public class ServicoMedico {
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 
+
+    @ManyToOne
+    @JoinColumn(name = "id_dentista")
+    private Dentista dentista;
+
     public ServicoMedico() {}
 
     public ServicoMedico(UUID id, String nome, String descricao, Float preco, boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm) {
@@ -32,6 +35,17 @@ public class ServicoMedico {
         this.ativo = ativo;
         this.criadoEm = criadoEm;
         this.atualizadoEm = atualizadoEm;
+    }
+
+    public ServicoMedico(UUID id, String nome, String descricao, Float preco, boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Dentista dentista) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.ativo = ativo;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
+        this.dentista = dentista;
     }
 
     public UUID getId() {
@@ -88,6 +102,14 @@ public class ServicoMedico {
 
     public void setAtualizadoEm(LocalDateTime atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
+    }
+
+    public Dentista getDentista() {
+        return dentista;
+    }
+
+    public void setDentista(Dentista dentista) {
+        this.dentista = dentista;
     }
 
 }

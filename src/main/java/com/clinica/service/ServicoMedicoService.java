@@ -1,8 +1,13 @@
 package com.clinica.service;
 
+import com.clinica.domain.dentista.Dentista;
+import com.clinica.domain.dentista.dto.DetailDentistaDTO;
 import com.clinica.domain.servicoMedico.ServicoMedico;
 import com.clinica.domain.servicoMedico.dto.CreateServicoMedicoDTO;
+import com.clinica.domain.servicoMedico.dto.DetailServicoMedicoDTO;
+import com.clinica.domain.servicoMedico.dto.ListServicoMedicoDTO;
 import com.clinica.domain.servicoMedico.dto.UpdateServicoMedicoDTO;
+import com.clinica.repository.IDentistaRepository;
 import com.clinica.repository.IServicoMedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +21,46 @@ import java.util.UUID;
 public class ServicoMedicoService {
 
     @Autowired
-    IServicoMedicoRepository servicoMedicoRepos;
+    IServicoMedicoRepository healthServiceRepos;
 
-    public List<ServicoMedico> list() {
-        return servicoMedicoRepos.findAll();
+    @Autowired
+    IDentistaRepository dentistRepos;
+
+    public List<ListServicoMedicoDTO> list() {
+        return healthServiceRepos.findAll()
+                .stream()
+                .map(ListServicoMedicoDTO::new)
+                .toList();
     }
 
-    public ServicoMedico create(CreateServicoMedicoDTO data) {
+    public DetailServicoMedicoDTO getById(UUID id) {
 
-        Optional<ServicoMedico> healthcareServiceOpt = servicoMedicoRepos.findByNome(data.nome());
+        Optional<ServicoMedico> healthServiceOpt = healthServiceRepos.findById(id);
+
+        if(healthServiceOpt.isPresent()) {
+            return new DetailServicoMedicoDTO(healthServiceOpt.get());
+        }
+
+        throw new RuntimeException("Dentist not found");
+
+    }
+
+    public DetailServicoMedicoDTO create(CreateServicoMedicoDTO data) {
+
+        Optional<ServicoMedico> healthcareServiceOpt = healthServiceRepos.findByNome(data.nome());
+        Optional<Dentista> dentistOpt = dentistRepos.findById(data.dentistaId());
 
         if (healthcareServiceOpt.isEmpty()) {
-            ServicoMedico servicoMedicoToCreate = new ServicoMedico(UUID.randomUUID(), data.nome(), data.descricao(), data.preco(), true, LocalDateTime.now(), null);
-            return servicoMedicoRepos.save(servicoMedicoToCreate);
+
+            if(dentistOpt.isPresent()) {
+                ServicoMedico healthServiceToSave = new ServicoMedico(UUID.randomUUID(), data.nome(), data.descricao(), data.preco(), true, LocalDateTime.now(), null, dentistOpt.get());
+
+                ServicoMedico healthServiceSaved = healthServiceRepos.save(healthServiceToSave);
+
+                return new DetailServicoMedicoDTO(healthServiceSaved);
+            }
+            throw new RuntimeException("Dentist not found");
+
         }
 
         throw new RuntimeException("Health Service not found");
@@ -37,7 +69,7 @@ public class ServicoMedicoService {
 
     public ServicoMedico update(UUID id, UpdateServicoMedicoDTO data) {
 
-        Optional<ServicoMedico> HealthcareServiceOpt = servicoMedicoRepos.findById(id);
+        Optional<ServicoMedico> HealthcareServiceOpt = healthServiceRepos.findById(id);
 
         if (HealthcareServiceOpt.isPresent()) {
 
@@ -47,10 +79,9 @@ public class ServicoMedicoService {
             if(data.descricao() != null) servicoMedicoToCreate.setDescricao(data.descricao());
             if(data.preco() != null) servicoMedicoToCreate.setPreco(data.preco());
             if(data.ativo() != null) servicoMedicoToCreate.setAtivo(data.ativo());
-            if(data.criadoEm() != null) servicoMedicoToCreate.setCriadoEm(data.criadoEm());
             servicoMedicoToCreate.setAtualizadoEm(LocalDateTime.now());
 
-            return servicoMedicoRepos.save(servicoMedicoToCreate);
+            return healthServiceRepos.save(servicoMedicoToCreate);
 
         }
 
@@ -60,12 +91,12 @@ public class ServicoMedicoService {
 
     public ServicoMedico delete(UUID id) {
 
-        Optional<ServicoMedico> healthcareServiceOpt = servicoMedicoRepos.findById(id);
+        Optional<ServicoMedico> healthcareServiceOpt = healthServiceRepos.findById(id);
 
         if (healthcareServiceOpt.isPresent()) {
             ServicoMedico servicoMedicoToDelete = healthcareServiceOpt.get();
             servicoMedicoToDelete.setAtivo(false);
-            return servicoMedicoRepos.save(servicoMedicoToDelete);
+            return healthServiceRepos.save(servicoMedicoToDelete);
         }
 
         throw new RuntimeException("Health Service not found");
