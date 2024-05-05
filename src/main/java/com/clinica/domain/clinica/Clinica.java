@@ -1,6 +1,7 @@
 package com.clinica.domain.clinica;
 
 import com.clinica.domain.admin.Admin;
+import com.clinica.domain.atendimento.Atendimento;
 import com.clinica.domain.paciente.Paciente;
 import jakarta.persistence.*;
 
@@ -28,6 +29,9 @@ public class Clinica {
 
     @OneToMany(mappedBy = "clinica")
     private List<Paciente> patients;
+
+    @OneToMany(mappedBy = "clinic")
+    private List<Atendimento> appointments;
 
     public Clinica() {}
 

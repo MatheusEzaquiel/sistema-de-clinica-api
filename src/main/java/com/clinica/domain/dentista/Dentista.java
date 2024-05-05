@@ -1,10 +1,13 @@
 package com.clinica.domain.dentista;
 
 import com.clinica.domain.clinica.Clinica;
+import com.clinica.domain.atendimento.*;
+import com.clinica.domain.servicoMedico.ServicoMedico;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Dentista")
@@ -26,6 +29,13 @@ public class Dentista {
     @ManyToOne
     @JoinColumn(name = "id_clinica")
     private Clinica clinica;
+
+    @OneToMany(mappedBy = "dentista")
+    private List<ServicoMedico> servicosMedicos;
+
+    @OneToMany(mappedBy = "dentist")
+    private List<Atendimento> atendimentos;
+
 
     public Dentista(){}
 

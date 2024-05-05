@@ -1,10 +1,13 @@
 package com.clinica.domain.paciente;
 
+import com.clinica.domain.atendimento.Atendimento;
 import com.clinica.domain.clinica.Clinica;
+import com.clinica.domain.pagamento.Pagamento;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Paciente")
@@ -26,6 +29,13 @@ public class Paciente {
     @JoinColumn(name = "id_clinica")
     private Clinica clinica;
 
+    @OneToMany(mappedBy = "patient")
+    private List<Pagamento> payments;
+
+    @OneToMany(mappedBy = "patient")
+    private List<Atendimento> appointments;
+
+
     public Paciente() {}
 
     public Paciente(UUID id, String cpf, String nome, LocalDate dataNascimento, Boolean planoDeSaude, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Clinica clinica) {
@@ -38,6 +48,19 @@ public class Paciente {
         this.criadoEm = criadoEm;
         this.atualizadoEm = atualizadoEm;
         this.clinica = clinica;
+    }
+
+    public Paciente(UUID id, String cpf, String nome, LocalDate dataNascimento, Boolean planoDeSaude, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Clinica clinica, List<Pagamento> payments) {
+        this.id = id;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.planoDeSaude = planoDeSaude;
+        this.ativo = ativo;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
+        this.clinica = clinica;
+        this.payments = payments;
     }
 
 
@@ -111,6 +134,14 @@ public class Paciente {
 
     public void setClinica(Clinica clinica) {
         this.clinica = clinica;
+    }
+
+    public List<Pagamento> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Pagamento> payments) {
+        this.payments = payments;
     }
 
     @Override
