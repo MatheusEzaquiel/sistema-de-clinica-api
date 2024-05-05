@@ -8,6 +8,7 @@ import com.clinica.domain.clinica.Clinica;
 import com.clinica.domain.dentista.Dentista;
 import com.clinica.domain.paciente.Paciente;
 import com.clinica.domain.pagamento.Pagamento;
+import com.clinica.domain.pagamento.dto.CreatePagamentoDTO;
 import com.clinica.domain.servicoMedico.ServicoMedico;
 import com.clinica.repository.*;
 import jakarta.transaction.Transactional;
@@ -40,7 +41,7 @@ public class AtendimentoService {
     IAdminRepository adminRepos;
 
     @Autowired
-    IClinicaRepository clinicRepos;
+    PagamentoService paymentService;
 
 
     public List<DetailAtendimentoDTO> list() {
@@ -52,39 +53,41 @@ public class AtendimentoService {
 
     @Transactional
     public DetailAtendimentoDTO save(CreateAtendimentoDTO data) {
-        /*
-        Optional<Dentista> dentistOpt = dentistRepos.findById(data.dentistaId());
-        Optional<Paciente> patientOpt = patientRepos.findById(data.pacienteId());
-        Optional<ServicoMedico> healthServiceOpt = healthServiceRepos.findById(data.servicoMedicoId());
-        Optional<Pagamento> paymentOpt = paymentRepos.findById(data.pagamentoId());
-        Optional<Admin> adminOpt = adminRepos.findById(data.adminId());
-        Optional<Clinica> clinicOpt = clinicRepos.findById(data.clinicaId());
-
-        Atendimento appointmentToSave = new Atendimento(
-                UUID.randomUUID(), data.horarioInicio(), data.horarioFim(), data.data(), true, LocalDateTime.now(), null,
-                dentistOpt.get(), patientOpt.get(), healthServiceOpt.get(), paymentOpt.get(), adminOpt.get(), clinicOpt.get());*/
-
-        Dentista dentist = dentistRepos.findById(data.dentistaId())
-                .orElseThrow(() -> new RuntimeException("Dentista não encontrado com ID: " + data.dentistaId()));
 
         Paciente patient = patientRepos.findById(data.pacienteId())
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado com ID: " + data.pacienteId()));
 
+        // Patient's clinic
+        Clinica clinic = patient.getClinica();
+
+
+        // Verification Dentist exists
+        Dentista dentist = dentistRepos.findById(data.dentistaId())
+                .orElseThrow(() -> new RuntimeException("Dentista não encontrado com ID: " + data.dentistaId()));
+
+            // Verification Dentist doesn't belong the same Clinic of patient
+            if(dentist.getClinica().getId() != clinic.getId()) {
+                throw new RuntimeException("This Dentist doesn't belong the same clinic of the patient");
+            }
+
+        // Verification HealthService exists
         ServicoMedico healthService = healthServiceRepos.findById(data.servicoMedicoId())
-                .orElseThrow(() -> new RuntimeException("Serviço médico não encontrado com ID: " + data.servicoMedicoId()));
+                .orElseThrow(() -> new RuntimeException("Health Service not found: " + data.servicoMedicoId()));
 
-        Pagamento payment = paymentRepos.findById(data.pagamentoId())
-                .orElseThrow(() -> new RuntimeException("Pagamento não encontrado com ID: " + data.pagamentoId()));
+            //Verification Dentist realizes this healthService
+            if(healthService.getDentista().getId() != dentist.getId()) throw new RuntimeException("Dentist doesn't realize this health service");
 
+        // Verification Admin exists
         Admin admin = adminRepos.findById(data.adminId())
                 .orElseThrow(() -> new RuntimeException("Admin não encontrado com ID: " + data.adminId()));
 
-        Clinica clinic = clinicRepos.findById(data.clinicaId())
-                .orElseThrow(() -> new RuntimeException("Clínica não encontrada com ID: " + data.clinicaId()));
+            // Verification Admins belong the same clinic of patient
+            if(admin.getClinica().getId() != clinic.getId()) throw new RuntimeException("Admin doesn't belong of this clinic");
+
 
         Atendimento appointmentToSave = new Atendimento(
                 UUID.randomUUID(), data.horarioInicio(), data.horarioFim(), data.data(), true, LocalDateTime.now(), null,
-                dentist, patient, healthService, payment, admin, clinic);
+                dentist, patient, healthService, admin, clinic);
 
         return new DetailAtendimentoDTO(appointmentRepos.save(appointmentToSave));
 

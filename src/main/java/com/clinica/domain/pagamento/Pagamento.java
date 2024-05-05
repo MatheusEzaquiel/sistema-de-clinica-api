@@ -1,11 +1,13 @@
 package com.clinica.domain.pagamento;
 
+import com.clinica.domain.atendimento.Atendimento;
 import com.clinica.domain.clinica.Clinica;
 import com.clinica.domain.paciente.Paciente;
 import com.clinica.domain.servicoMedico.ServicoMedico;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Pagamento")
@@ -20,6 +22,7 @@ public class Pagamento {
     private Boolean situacao;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
+
 
     @ManyToOne
     @JoinColumn(name = "id_servico_medico")

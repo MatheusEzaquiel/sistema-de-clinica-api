@@ -56,7 +56,6 @@ public class ServicoMedicoService {
                 ServicoMedico healthServiceToSave = new ServicoMedico(UUID.randomUUID(), data.nome(), data.descricao(), data.preco(), true, LocalDateTime.now(), null, dentistOpt.get());
 
                 ServicoMedico healthServiceSaved = healthServiceRepos.save(healthServiceToSave);
-
                 return new DetailServicoMedicoDTO(healthServiceSaved);
             }
             throw new RuntimeException("Dentist not found");

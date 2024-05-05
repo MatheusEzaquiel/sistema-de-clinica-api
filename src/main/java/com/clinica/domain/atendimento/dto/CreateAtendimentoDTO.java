@@ -18,8 +18,6 @@ public record CreateAtendimentoDTO(
         UUID dentistaId,
         UUID pacienteId,
         UUID servicoMedicoId,
-        UUID pagamentoId,
-        UUID adminId,
-        UUID clinicaId
+        UUID adminId
 ) {
 }

@@ -26,9 +26,6 @@ public class AtendimentoController {
 
     @PostMapping
     public ResponseEntity<DetailAtendimentoDTO> save(@RequestBody CreateAtendimentoDTO data) {
-
-        System.out.println("data:" + data);
-
         DetailAtendimentoDTO appointmentDTO = appointmentService.save(data);
         return ResponseEntity.status(HttpStatus.OK).body(appointmentDTO);
     }

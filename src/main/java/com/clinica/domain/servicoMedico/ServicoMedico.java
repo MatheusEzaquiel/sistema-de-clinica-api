@@ -1,6 +1,8 @@
 package com.clinica.domain.servicoMedico;
 
+import com.clinica.domain.atendimento.Atendimento;
 import com.clinica.domain.dentista.Dentista;
+import com.clinica.domain.pagamento.Pagamento;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -20,10 +22,16 @@ public class ServicoMedico {
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 
+    @OneToMany(mappedBy = "healthService")
+    private List<Pagamento> payments;
+
+    @OneToMany(mappedBy = "healthService")
+    private List<Atendimento> appointments;
 
     @ManyToOne
     @JoinColumn(name = "id_dentista")
     private Dentista dentista;
+
 
     public ServicoMedico() {}
 

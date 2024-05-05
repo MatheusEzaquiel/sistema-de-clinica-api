@@ -41,10 +41,6 @@ public class Atendimento {
     private ServicoMedico healthService;
 
     @ManyToOne
-    @JoinColumn(name = "id_pagamento")
-    private Pagamento payment;
-
-    @ManyToOne
     @JoinColumn(name = "id_admin")
     private Admin admin;
 
@@ -54,7 +50,7 @@ public class Atendimento {
 
     public Atendimento() {}
 
-    public Atendimento(UUID id, LocalTime horarioInicio, LocalTime horarioFim, LocalDate data, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Dentista dentist, Paciente patient, ServicoMedico healthService, Pagamento payment, Admin admin, Clinica clinica) {
+    public Atendimento(UUID id, LocalTime horarioInicio, LocalTime horarioFim, LocalDate data, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Dentista dentist, Paciente patient, ServicoMedico healthService, Admin admin, Clinica clinica) {
         this.id = id;
         this.horarioInicio = horarioInicio;
         this.horarioFim = horarioFim;
@@ -65,12 +61,11 @@ public class Atendimento {
         this.dentist = dentist;
         this.patient = patient;
         this.healthService = healthService;
-        this.payment = payment;
         this.admin = admin;
         this.clinic = clinica;
     }
 
-    public Atendimento(LocalTime horarioInicio, LocalTime horarioFim, LocalDate data, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Dentista dentist, Paciente patient, ServicoMedico healthService, Pagamento payment, Admin admin, Clinica clinica) {
+    public Atendimento(LocalTime horarioInicio, LocalTime horarioFim, LocalDate data, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Dentista dentist, Paciente patient, ServicoMedico healthService, Admin admin, Clinica clinica) {
         this.horarioInicio = horarioInicio;
         this.horarioFim = horarioFim;
         this.data = data;
@@ -80,7 +75,6 @@ public class Atendimento {
         this.dentist = dentist;
         this.patient = patient;
         this.healthService = healthService;
-        this.payment = payment;
         this.admin = admin;
         this.clinic = clinica;
     }
@@ -163,14 +157,6 @@ public class Atendimento {
 
     public void setHealthService(ServicoMedico healthService) {
         this.healthService = healthService;
-    }
-
-    public Pagamento getPayment() {
-        return payment;
-    }
-
-    public void setPayment(Pagamento payment) {
-        this.payment = payment;
     }
 
     public Admin getAdmin() {

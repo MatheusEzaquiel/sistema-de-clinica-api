@@ -29,7 +29,6 @@ public record DetailAtendimentoDTO(
         BasicDentistaDTO dentista,
         IdNomeCpfPacienteDTO paciente,
         IdNomePrecoServicoMedicoDTO  servicoMedico,
-        BasicPagamentoDTO pagamento,
         BasicAdminDTO admin,
         BasicClinicaDTO clinica
 ) {
@@ -46,7 +45,6 @@ public record DetailAtendimentoDTO(
                 new BasicDentistaDTO(appointment.getDentist()),
                 new IdNomeCpfPacienteDTO(appointment.getPatient()),
                 new IdNomePrecoServicoMedicoDTO(appointment.getHealthService()),
-                new BasicPagamentoDTO(appointment.getPayment()),
                 new BasicAdminDTO(appointment.getAdmin()) ,
                 new BasicClinicaDTO(appointment.getClinica())
         );

@@ -1,10 +1,12 @@
 package com.clinica.domain.admin;
 
+import com.clinica.domain.atendimento.Atendimento;
 import com.clinica.domain.clinica.Clinica;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity(name = "Admin")
@@ -24,6 +26,9 @@ public class Admin {
     @ManyToOne
     @JoinColumn(name = "id_clinica")
     private Clinica clinica;
+
+    @OneToMany(mappedBy = "admin")
+    private List<Atendimento> appointments;
 
     public Admin(){}
     public Admin(UUID id, String cpf, Integer role, String nome, LocalDate dataNascimento, Boolean ativo, LocalDateTime criadoEm, LocalDateTime atualizadoEm, Clinica clinica) {
