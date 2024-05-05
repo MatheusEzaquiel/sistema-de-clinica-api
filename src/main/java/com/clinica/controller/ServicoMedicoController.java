@@ -2,6 +2,8 @@ package com.clinica.controller;
 
 import com.clinica.domain.servicoMedico.ServicoMedico;
 import com.clinica.domain.servicoMedico.dto.CreateServicoMedicoDTO;
+import com.clinica.domain.servicoMedico.dto.DetailServicoMedicoDTO;
+import com.clinica.domain.servicoMedico.dto.ListServicoMedicoDTO;
 import com.clinica.domain.servicoMedico.dto.UpdateServicoMedicoDTO;
 import com.clinica.service.ServicoMedicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,20 @@ public class ServicoMedicoController {
     private ServicoMedicoService servicoMedicoService;
 
     @GetMapping
-    public ResponseEntity<List<ServicoMedico>> list() {
-        List<ServicoMedico> services = servicoMedicoService.list();
+    public ResponseEntity<List<ListServicoMedicoDTO>> list() {
+        List<ListServicoMedicoDTO> services = servicoMedicoService.list();
         return ResponseEntity.status(HttpStatus.OK).body(services);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DetailServicoMedicoDTO> detail(@PathVariable UUID id) {
+        DetailServicoMedicoDTO healthService = servicoMedicoService.getById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(healthService);
+    }
+
     @PostMapping
-    public ResponseEntity<ServicoMedico> create(@RequestBody CreateServicoMedicoDTO data) {
-        ServicoMedico serviceCreated = servicoMedicoService.create(data);
+    public ResponseEntity<DetailServicoMedicoDTO> save(@RequestBody CreateServicoMedicoDTO data) {
+        DetailServicoMedicoDTO serviceCreated = servicoMedicoService.create(data);
         return ResponseEntity.status(HttpStatus.CREATED).body(serviceCreated);
     }
 

@@ -6,7 +6,6 @@ public record UpdateServicoMedicoDTO(
         String nome,
         String descricao,
         Float preco,
-        Boolean ativo,
-        LocalDateTime criadoEm,
-        LocalDateTime atualizadoEm) {
+        Boolean ativo
+) {
 }
